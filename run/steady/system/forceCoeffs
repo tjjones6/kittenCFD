@@ -1,0 +1,19 @@
+type            forceCoeffs;
+libs            (forces);
+
+writeControl    timeStep;
+writeInterval   1;
+
+patches         (kitten);
+
+rho             rhoInf;
+rhoInf          1.2;
+
+magUInf         5;
+lRef            0.3;
+Aref            0.015;
+
+liftDir         (0 1 0);
+dragDir         (0 0 1);
+pitchAxis       (1 0 0);
+CofR            (0 0.1 0);

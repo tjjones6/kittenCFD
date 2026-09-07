@@ -1,0 +1,31 @@
+# OpenFOAM time directories (but keep 0.orig)
+run/*/[0-9]*/
+run/*/0/
+
+# mesh — regenerable from blockMesh + snappyHexMesh
+run/*/constant/polyMesh/
+run/*/constant/extendedFeatureEdgeMesh/
+
+# parallel decomposition
+run/*/processor*/
+
+# outputs
+run/*/postProcessing/
+run/*/VTK/
+run/*/*.log
+run/*/log.*
+
+# geometry — regenerable from the OBJ + documented transform
+geometry/*.stl
+run/*/constant/triSurface/*.stl
+run/*/constant/triSurface/*.obj
+run/*/constant/triSurface/*.vtp
+
+# editor noise
+*.swp
+*~
+.vscode/
+
+# keep the pristine initial conditions
+!run/*/0.orig/
+!run/*/0.orig/**
