@@ -8,7 +8,7 @@ conditions
         type            average;
         functionObject  forceCoeffs;
         fields          (Cd Cl);
-        tolerance       1e-4;
+        tolerance       1e-5;
         window          100;
         windowType      exact;
     }

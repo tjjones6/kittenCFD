@@ -1,0 +1,26 @@
+#!/bin/sh
+cd "${0%/*}" || exit
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions
+#------------------------------------------------------------------------------
+
+mkdir -p logs
+touch case.foam
+trap 'mv -f log.* logs/ 2>/dev/null' EXIT INT TERM
+
+runApplication blockMesh
+
+runApplication decomposePar
+
+runParallel snappyHexMesh -overwrite
+
+runParallel reconstructParMesh -constant
+
+restore0Dir -processor
+
+runParallel patchSummary
+
+runParallel checkMesh -constant
+
+runParallel $(getApplication)
+
+#------------------------------------------------------------------------------
