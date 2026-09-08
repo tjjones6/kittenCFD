@@ -2,8 +2,13 @@
 
 External aerodynamics of a (chunky) kitten, solved with OpenFOAM v2312.
 
-![Vortex shedding, Q-criterion coloured by Cp](figures/Cp_Qcrit.gif)
-![Surface pressure coefficient](figures/Cp_medium.png)
+<p align="center">
+  <img src="figures/Cp_Qcrit.gif" width="75%" alt="Vortex shedding, Q-criterion coloured by Cp">
+</p>
+
+<p align="center">
+  <img src="figures/Cp_medium.png" width="90%" alt="Surface pressure coefficient">
+</p>
 
 ## Setup
 
