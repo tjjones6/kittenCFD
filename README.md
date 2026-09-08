@@ -1,6 +1,6 @@
 # kittenCFD
 
-External aerodynamics of a kitten, solved with OpenFOAM v2312.
+External aerodynamics of a (chunky) kitten, solved with OpenFOAM v2312.
 
 ![Surface pressure coefficient](figures/Cp_medium.png)
 
