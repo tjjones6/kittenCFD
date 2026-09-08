@@ -59,8 +59,15 @@ solvers
 
 SIMPLE
 {
-    nNonOrthogonalCorrectors 0;
+    nNonOrthogonalCorrectors 1;
     consistent yes;
+	
+	residualControl
+    {
+        p       1e-4;
+        U       1e-4;
+        "(k|omega)" 1e-4;
+    }
 }
 
 potentialFlow
@@ -70,12 +77,11 @@ potentialFlow
 
 relaxationFactors
 {
-    equations
-    {
-        U               0.9;
-        k               0.7;
-        omega           0.7;
-    }
+        equations
+		{
+			U               0.95;
+			"(k|omega)"     0.9;
+		}
 }
 
 cache
