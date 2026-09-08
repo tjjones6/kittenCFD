@@ -19,6 +19,7 @@ internalField   uniform 0.094;
 
 boundaryField
 {
+    #includeEtc "caseDicts/setConstraintTypes"
     inlet   { type fixedValue; value uniform 0.094; }
     outlet  { type zeroGradient; }
     ground  { type kqRWallFunction; value uniform 0.094; }

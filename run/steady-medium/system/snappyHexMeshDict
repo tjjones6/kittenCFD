@@ -1,0 +1,221 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Which of the steps to run
+castellatedMesh true;
+snap            true;
+addLayers       true;
+
+
+// Geometry. Definition of all surfaces. All surfaces are of class
+// searchableSurface.
+// Surfaces are used
+// - to specify refinement for any mesh cell intersecting it
+// - to specify refinement for any mesh cell inside/outside/near
+// - to 'snap' the mesh boundary to the surface
+geometry
+{
+    kitten.stl { type triSurfaceMesh; name kitten; }
+
+    refinementBox
+    {
+        type searchableBox;
+        min (-0.25 -0.02 -0.35);
+        max ( 0.25  0.40  1.20);
+    }
+}
+
+castellatedMeshControls
+{
+    maxLocalCells    2000000;
+    maxGlobalCells   8000000;
+    minRefinementCells 10;
+    nCellsBetweenLevels 3;
+
+    features ();
+
+    refinementSurfaces
+    {
+        kitten
+        {
+            level (4 5);
+            patchInfo { type wall; }
+        }
+    }
+
+    resolveFeatureAngle 30;
+	
+	allowFreeStandingZoneFaces true;
+
+    refinementRegions
+    {
+        refinementBox { mode inside; levels ((1e15 2)); }
+    }
+
+    locationInMesh (0.4123 0.5137 2.0271);
+}
+
+
+
+// Settings for the snapping.
+snapControls
+{
+    //- Number of patch smoothing iterations before finding correspondence
+    //  to surface
+    nSmoothPatch 3;
+
+    //- Relative distance for points to be attracted by surface feature point
+    //  or edge. True distance is this factor times local
+    //  maximum edge length.
+    tolerance 2.0;
+
+    //- Number of mesh displacement relaxation iterations.
+    nSolveIter 30;
+
+    //- Maximum number of snapping relaxation iterations. Should stop
+    //  before upon reaching a correct mesh.
+    nRelaxIter 5;
+
+    // Feature snapping
+
+        //- Number of feature edge snapping iterations.
+        //  Leave out altogether to disable.
+        nFeatureSnapIter 10;
+
+        //- Detect (geometric only) features by sampling the surface
+        //  (default=false).
+        implicitFeatureSnap false;
+
+        //- Use castellatedMeshControls::features (default = true)
+        explicitFeatureSnap true;
+
+        //- Detect points on multiple surfaces (only for explicitFeatureSnap)
+        multiRegionFeatureSnap false;
+}
+
+
+
+// Settings for the layer addition.
+addLayersControls
+{
+    // Are the thickness parameters below relative to the undistorted
+    // size of the refined cell outside layer (true) or absolute sizes (false).
+    relativeSizes false;
+
+    // Per final patch (so not geometry!) the layer information
+    layers { kitten { nSurfaceLayers 2; } }
+
+    // Expansion factor for layer mesh
+    expansionRatio 1.2;
+
+    // Wanted thickness of final added cell layer. If multiple layers
+    // is the thickness of the layer furthest away from the wall.
+    // Relative to undistorted size of cell outside layer.
+    // See relativeSizes parameter.
+    firstLayerThickness 0.0012;
+
+    // Minimum thickness of cell layer. If for any reason layer
+    // cannot be above minThickness do not add layer.
+    // Relative to undistorted size of cell outside layer.
+    minThickness 0.0003;
+
+    // If points get not extruded do nGrow layers of connected faces that are
+    // also not grown. This helps convergence of the layer addition process
+    // close to features.
+    // Note: changed(corrected) w.r.t 1.7.x! (didn't do anything in 1.7.x)
+    nGrow 0;
+
+    // Advanced settings
+
+    // When not to extrude surface. 0 is flat surface, 90 is when two faces
+    // are perpendicular
+    featureAngle 60;
+
+    // At non-patched sides allow mesh to slip if extrusion direction makes
+    // angle larger than slipFeatureAngle.
+    slipFeatureAngle 30;
+
+    // Maximum number of snapping relaxation iterations. Should stop
+    // before upon reaching a correct mesh.
+    nRelaxIter 5;
+
+    // Number of smoothing iterations of surface normals
+    nSmoothSurfaceNormals 1;
+
+    // Number of smoothing iterations of interior mesh movement direction
+    nSmoothNormals 3;
+
+    // Smooth layer thickness over surface patches
+    nSmoothThickness 10;
+
+    // Stop layer growth on highly warped cells
+    maxFaceThicknessRatio 0.5;
+
+    // Reduce layer growth where ratio thickness to medial
+    // distance is large
+    maxThicknessToMedialRatio 0.6;
+
+    // Angle used to pick up medial axis points
+    // Note: changed(corrected) w.r.t 1.7.x! 90 degrees corresponds to 130
+    // in 1.7.x.
+    minMedialAxisAngle 90;
+
+
+    // Create buffer region for new layer terminations
+    nBufferCellsNoExtrude 0;
+
+
+    // Overall max number of layer addition iterations. The mesher will exit
+    // if it reaches this number of iterations; possibly with an illegal
+    // mesh.
+    nLayerIter 50;
+}
+
+
+
+// Generic mesh quality settings. At any undoable phase these determine
+// where to undo.
+meshQualityControls
+{
+    #include "meshQualityDict"
+
+
+    // Advanced
+
+    //- Number of error distribution iterations
+    nSmoothScale 4;
+    //- Amount to scale back displacement at error points
+    errorReduction 0.75;
+}
+
+
+// Advanced
+
+// Write flags
+writeFlags
+(
+    scalarLevels
+    layerSets
+    layerFields     // write volScalarField for layer coverage
+);
+
+
+// Merge tolerance. Is fraction of overall bounding box of initial mesh.
+// Note: the write tolerance needs to be higher than this.
+mergeTolerance 1e-6;
+
+
+// ************************************************************************* //

@@ -1,0 +1,17 @@
+type            runTimeControl;
+libs            (utilityFunctionObjects);
+
+conditions
+{
+    forces
+    {
+        type            average;
+        functionObject  forceCoeffs;
+        fields          (Cd Cl);
+        tolerance       1e-4;
+        window          100;
+        windowType      exact;
+    }
+}
+
+satisfiedAction end;

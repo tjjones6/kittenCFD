@@ -9,46 +9,23 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       dictionary;
-    object      controlDict;
+    class       volScalarField;
+    object      k;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     simpleFoam;
+dimensions      [0 2 -2 0 0 0 0];
+internalField   uniform 0.094;
 
-startFrom       startTime;
-
-startTime       0;
-
-stopAt          endTime;
-
-endTime         1000;
-
-deltaT          1;
-
-writeControl    timeStep;
-
-writeInterval   100;
-
-purgeWrite      0;
-
-writeFormat     binary;
-
-writePrecision  6;
-
-writeCompression off;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-functions
+boundaryField
 {
-    #includeFunc forceCoeffs
-    #includeFunc yPlus
-    #includeFunc solverInfo
+    #includeEtc "caseDicts/setConstraintTypes"
+    inlet   { type fixedValue; value uniform 0.094; }
+    outlet  { type zeroGradient; }
+    ground  { type kqRWallFunction; value uniform 0.094; }
+    top     { type slip; }
+    sides   { type slip; }
+    kitten  { type kqRWallFunction; value uniform 0.094; }
 }
 
 

@@ -3,6 +3,9 @@ cd "${0%/*}" || exit
 . ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions
 #------------------------------------------------------------------------------
 
+mkdir -p logs
+trap 'mv -f log.* logs/ 2>/dev/null' EXIT INT TERM
+
 runApplication blockMesh
 
 runApplication decomposePar

@@ -1,0 +1,13 @@
+type            pressure;
+libs            (fieldFunctionObjects);
+
+field           p;
+result          Cp;
+mode            staticCoeff;
+
+pInf            0;
+UInf            (0 0 5);
+rhoInf          1.2;
+rho             rhoInf;
+
+writeControl    writeTime;

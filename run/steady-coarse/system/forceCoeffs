@@ -11,7 +11,7 @@ rhoInf          1.2;
 
 magUInf         5;
 lRef            0.3;
-Aref            0.015;
+Aref            0.0268;
 
 liftDir         (0 1 0);
 dragDir         (0 0 1);

@@ -4,6 +4,7 @@ cd "${0%/*}" || exit
 #------------------------------------------------------------------------------
 
 cleanCase0
+rm -rf logs
 
 # leave constant/triSurface alone — kitten.stl is a symlink to ../../../../geometry/
 

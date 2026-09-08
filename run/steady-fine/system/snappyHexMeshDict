@@ -113,10 +113,10 @@ addLayersControls
 {
     // Are the thickness parameters below relative to the undistorted
     // size of the refined cell outside layer (true) or absolute sizes (false).
-    relativeSizes true;
+    relativeSizes false;
 
     // Per final patch (so not geometry!) the layer information
-    layers { kitten { nSurfaceLayers 4; } }
+    layers { kitten { nSurfaceLayers 2; } }
 
     // Expansion factor for layer mesh
     expansionRatio 1.2;
@@ -125,12 +125,12 @@ addLayersControls
     // is the thickness of the layer furthest away from the wall.
     // Relative to undistorted size of cell outside layer.
     // See relativeSizes parameter.
-    finalLayerThickness 0.6;
+    firstLayerThickness 0.0012;
 
     // Minimum thickness of cell layer. If for any reason layer
     // cannot be above minThickness do not add layer.
     // Relative to undistorted size of cell outside layer.
-    minThickness 0.15;
+    minThickness 0.0003;
 
     // If points get not extruded do nGrow layers of connected faces that are
     // also not grown. This helps convergence of the layer addition process
@@ -150,7 +150,7 @@ addLayersControls
 
     // Maximum number of snapping relaxation iterations. Should stop
     // before upon reaching a correct mesh.
-    nRelaxIter 3;
+    nRelaxIter 5;
 
     // Number of smoothing iterations of surface normals
     nSmoothSurfaceNormals 1;
@@ -166,7 +166,7 @@ addLayersControls
 
     // Reduce layer growth where ratio thickness to medial
     // distance is large
-    maxThicknessToMedialRatio 0.3;
+    maxThicknessToMedialRatio 0.6;
 
     // Angle used to pick up medial axis points
     // Note: changed(corrected) w.r.t 1.7.x! 90 degrees corresponds to 130

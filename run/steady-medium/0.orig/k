@@ -10,21 +10,22 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volScalarField;
-    object      p;
+    object      k;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 dimensions      [0 2 -2 0 0 0 0];
-internalField   uniform 0;
+internalField   uniform 0.094;
 
 boundaryField
 {
-    inlet   { type zeroGradient; }
-    outlet  { type fixedValue; value uniform 0; }
-    ground  { type zeroGradient; }
+    #includeEtc "caseDicts/setConstraintTypes"
+    inlet   { type fixedValue; value uniform 0.094; }
+    outlet  { type zeroGradient; }
+    ground  { type kqRWallFunction; value uniform 0.094; }
     top     { type slip; }
     sides   { type slip; }
-    kitten  { type zeroGradient; }
+    kitten  { type kqRWallFunction; value uniform 0.094; }
 }
 
 
